@@ -113,7 +113,7 @@ int node<type>::searchval(type key)
     {
         if (key==this->a[i]) return this->val[i];
     }
-    return 0;
+    return -1;
 }
 
 template <typename type>

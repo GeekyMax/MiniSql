@@ -21,7 +21,7 @@ public:
 	API() {}
 	~API() {}
 
-	void DropTable(string tableName);
+	void dropTable(string tableName);
 	void tableCreate(string tableName, vector<Attribute>* attributeVector, string primaryKeyName, int primaryKeyLocation);
 
 	void indexDrop(string indexName);
@@ -39,12 +39,7 @@ public:
 	int typeSizeGet(int type);
 
 	void allIndexAddressInfoGet(vector<IndexInfo> *indexNameVector);
-
-	int attributeNameGet(string tableName, vector<string>* attributeNameVector);
-	int attributeTypeGet(string tableName, vector<string>* attributeTypeVector);
 	int attributeGet(string tableName, vector<Attribute>* attributeVector);
-
-	void indexValueInsert(string indexName, string value, int blockOffset);
 	void indexInsert(string indexName, char* value, int type, int blockOffset);
 	void recordIndexDelete(char* recordBegin, int recordSize, vector<Attribute>* attributeVector, int blockOffset);
 	void recordIndexInsert(char* recordBegin, int recordSize, vector<Attribute>* attributeVector, int blockOffset);
@@ -55,11 +50,4 @@ private:
 	void AttributePrint(vector<string>* attributeNameVector);
 };
 
-struct int_t {
-	int value;
-};
-
-struct float_t {
-	float value;
-};
 #endif

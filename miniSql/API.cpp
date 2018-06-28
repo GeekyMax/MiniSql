@@ -15,7 +15,7 @@ IndexManager* im;
 * drop a table
 * @param tableName: name of table
 */
-void API::DropTable(string tableName)
+void API::dropTable(string tableName)
 {
 	if (!tableExist(tableName)) return;
 	vector<string> indexNameVector;
@@ -274,6 +274,7 @@ void API::recordInsert(string tableName, vector<string>* recordContent)
 		if (indexName != "")
 		{
 			//if the attribute has a index
+			//im->print(rm->getIndexFileName(indexName));
 			int blockoffest = im->search(rm->getIndexFileName(indexName), (*recordContent)[i]);
 			if (blockoffest != -1)
 			{

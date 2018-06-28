@@ -118,7 +118,7 @@ int Interpreter::interpreter(string sql) {
 							primaryKeyLocation = i;
 							word = getWord(sql, &tmp);
 							if (strcmp(word.c_str(), ")") != 0) {
-								cout << "ESyntax Error: missing ')' !" << endl;
+								cout << "Syntax Error: missing ')' !" << endl;
 								return 0;
 							}
 						}
@@ -141,7 +141,8 @@ int Interpreter::interpreter(string sql) {
 				return 1;
 			}
 		}
-		else if (strcmp(word.c_str(), "index") == 0) {
+		else if (strcmp(word.c_str(), "index") == 0) // create index 
+		{
 			string indexName = "";
 			string tableName = "";
 			string attributeName = "";
@@ -281,7 +282,7 @@ int Interpreter::interpreter(string sql) {
 		if (strcmp(word.c_str(), "table") == 0) { // drop table
 			word = getWord(sql, &tmp);
 			if (!word.empty()) {
-				ap->tableDrop(word);
+				ap->dropTable(word);
 				return 1;
 			}
 			else {

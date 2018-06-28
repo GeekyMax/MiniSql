@@ -106,7 +106,7 @@ int tree::search(string key)
         p = ((node<string> *)root)->search((key));
         return ((node<string> *)p)->searchval((key));
     }
-    return 0;
+    return -1;
 }
 
 int tree::deleta(string key)
