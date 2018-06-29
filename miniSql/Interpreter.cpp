@@ -465,6 +465,38 @@ string Interpreter::getWord(string sql, int *tmp)
 		word = sql.substr(index1, index2 - index1);
 		return word;
 	}
+	else if (sql[*tmp] == '<' && sql[*tmp + 1] == '>') {
+		(*tmp) += 2;
+		word = "<>";
+		return word;
+	}
+	else if (sql[*tmp] == '<' && sql[*tmp + 1] == '=') {
+		(*tmp) += 2;
+		word = "<=";
+		return word;
+	}
+	else if (sql[*tmp] == '>' && sql[*tmp + 1] == '=') {
+		(*tmp) += 2;
+		word = ">=";
+		return word;
+	}
+	else if (sql[*tmp] == '>') {
+		(*tmp)++;
+		word = ">";
+		return word;
+	}
+	else if (sql[*tmp] == '<') {
+		(*tmp)++;
+		word = "<";
+		return word;
+	}
+
+	else if (sql[*tmp] == '=') {
+		(*tmp)++;
+		word = "=";
+		return word;
+	}
+
 	else if (sql[*tmp] == 39)
 	{
 		(*tmp)++;
@@ -486,7 +518,7 @@ string Interpreter::getWord(string sql, int *tmp)
 	}
 	else
 	{
-		while (sql[*tmp] != ' ' && sql[*tmp] != '(' && sql[*tmp] != 10 && sql[*tmp] != 0 && sql[*tmp] != ')' && sql[*tmp] != ',')
+		while (sql[*tmp] != ' ' && sql[*tmp] != '(' && sql[*tmp] != 10 && sql[*tmp] != 0 && sql[*tmp] != ')' && sql[*tmp] != ','&&sql[*tmp] != '<'&&sql[*tmp] != '>'&&sql[*tmp] != '=')
 			(*tmp)++;
 		index2 = *tmp;
 		if (index1 != index2)
