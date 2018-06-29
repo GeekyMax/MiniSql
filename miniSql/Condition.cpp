@@ -4,7 +4,7 @@
 using namespace std;
 
 
-bool Condition::ifRight(const int content) const {
+bool Condition::ifRight(const int content){
 	stringstream ss;
 	ss << value;
 	int myContent;

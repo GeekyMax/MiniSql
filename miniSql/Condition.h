@@ -20,7 +20,7 @@ public:
 	string value; // the value to be compared
 	int operate; // the type to be compared
 
-	bool ifRight(int content) const;
+	bool ifRight(int content);
 	bool ifRight(float content);
 	bool ifRight(const string& content);
 };
