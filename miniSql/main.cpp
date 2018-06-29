@@ -15,20 +15,13 @@ void testAll();
 void testBufferManager();
 
 void init() {
-	FILE *fp;
+	FILE* fp;
 	fp = fopen("Indexs", "r");
 	if (fp == NULL) {
 		fp = fopen("Indexs", "w+");
 		return;
 	}
 	fclose(fp);
-}
-
-void print() {
-	clock_t finish = clock();
-	double duration = (double)(finish - start) / CLOCKS_PER_SEC;
-	duration *= 1000;
-	printf("now time is %2.1f milliseconds\n", duration * 1000);
 }
 
 void testGetWord() {
@@ -43,15 +36,10 @@ void testGetWord() {
 
 clock_t start;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
 	//    testBufferManager();
-		testAll();
+	testAll();
 	//testGetWord();
-	//    Attribute a = Attribute("test", 0, false);
-	//    Attribute b = Attribute("price", -1, false);
-	//    Attribute *m = (Attribute *) malloc(sizeof(Attribute));
-	//    memcpy(m, &a, sizeof(Attribute));
-	//    std::cout << m->name;
 	return 0;
 }
 
@@ -59,7 +47,7 @@ int main(int argc, char *argv[]) {
 void testAll() {
 	init();
 
-	API api;
+	Api api;
 	CatalogManager cm = CatalogManager();
 	RecordManager rm = RecordManager();
 
@@ -126,14 +114,13 @@ void testAll() {
 
 void testBufferManager() {
 	BufferManager bm = BufferManager();
-	FileNode *f = bm.fetchFileNode("good");
-	BlockNode *b = bm.fetchBlockHead(f);
-	char *content = b->getContent();
-	const char *c = "hello word";
+	FileNode* f = bm.fetchFileNode("good");
+	BlockNode* b = bm.fetchBlockHead(f);
+	char* content = b->getContent();
+	const char* c = "hello word";
 	memcpy(content, c, 11);
 	printf("%x", content);
-	FileNode *f2 = bm.fetchFileNode("good");
+	FileNode* f2 = bm.fetchFileNode("good");
 	b = bm.fetchBlockHead(f2);
 	printf("%x", content);
 }
-

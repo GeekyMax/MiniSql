@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "RecordManager.h"
 #include <cstring>
@@ -19,7 +18,7 @@ string RecordManager::getIndexFileName(string indexName) {
 //建立表文件
 bool RecordManager::tableCreate(string tableName) {
 	string filename = getTableFileName(tableName);
-	FILE *fp = fopen(filename.c_str(), "w+");
+	FILE* fp = fopen(filename.c_str(), "w+");
 	if (fp == NULL) {
 		return false;
 	}
@@ -40,7 +39,7 @@ bool RecordManager::tableDrop(string tableName) {
 //建立索引文件
 bool RecordManager::indexCreate(string indexName) {
 	string filename = getIndexFileName(indexName);
-	FILE *fp = fopen(filename.c_str(), "w+");
+	FILE* fp = fopen(filename.c_str(), "w+");
 	if (fp == NULL) {
 		return false;
 	}
@@ -64,17 +63,17 @@ bool RecordManager::indexDrop(string indexName) {
  * record为记录中所有属性的值
  * recordSize为记录大小
  */
-int RecordManager::recordInsert(string tableName, char *record, int recordSize) {
+int RecordManager::recordInsert(string tableName, char* record, int recordSize) {
 	string filename = getTableFileName(tableName);
 
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
 	// 循环遍历节点block链表
 	while (true) {
 		if (blockNode != nullptr) {
 			if (blockNode->getUsingSize() <= bm.getBlockSize() - recordSize) //判断该block是否有空
 			{
-				char *address = blockNode->getContent() + blockNode->getUsingSize(); // 得到空余空间的地址
+				char* address = blockNode->getContent() + blockNode->getUsingSize(); // 得到空余空间的地址
 				memcpy(address, record, recordSize); // 将记录存入
 				blockNode->setDirty(); // block已修改，设置dirty
 				blockNode->setUsingSize(blockNode->getUsingSize() + recordSize); // 更新block的使用空间
@@ -99,10 +98,10 @@ int RecordManager::recordInsert(string tableName, char *record, int recordSize) 
  * conditionVector为存储条件的容器
  */
 int
-RecordManager::recordShow(string tableName, vector<string> *attributeNameVector, vector<Condition> *conditionVector) {
+RecordManager::recordShow(string tableName, vector<string>* attributeNameVector, vector<Condition>* conditionVector) {
 	string filename = getTableFileName(tableName);
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
 	int count = 0;
 	while (true) {
 		if (blockNode == NULL) {
@@ -126,11 +125,11 @@ RecordManager::recordShow(string tableName, vector<string> *attributeNameVector,
  * conditionVector为存储条件的容器
  * blockOffset为api部分从index部分取得的块偏移量
  */
-int RecordManager::recordShowWithIndex(string tableName, vector<string> *attributeNameVector,
-	vector<Condition> *conditionVector, int blockOffset) {
+int RecordManager::recordShowWithIndex(string tableName, vector<string>* attributeNameVector,
+                                       vector<Condition>* conditionVector, int blockOffset) {
 	string filename = getTableFileName(tableName);
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockByOffset(fileNode, blockOffset); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockByOffset(fileNode, blockOffset); // 先拿到头节点
 	int count = 0;
 	if (blockNode == NULL) {
 		return -1;
@@ -148,18 +147,18 @@ int RecordManager::recordShowWithIndex(string tableName, vector<string> *attribu
  * conditionVector为存储条件的容器
  * block为目前正在检索的块
  */
-int RecordManager::recordBlockShow(string tableName, vector<string> *attributeNameVector,
-	vector<Condition> *conditionVector, BlockNode *block) {
+int RecordManager::recordBlockShow(string tableName, vector<string>* attributeNameVector,
+                                   vector<Condition>* conditionVector, BlockNode* block) {
 	if (block == NULL) {
 		return -1;
 	}
 	int count = 0;
-	char *recordBegin = block->getContent();
+	char* recordBegin = block->getContent();
 	vector<Attribute> attributeVector;
 	int recordSize = api->recordSizeGet(tableName);
 
 	api->attributeGet(tableName, &attributeVector);
-	char *blockBegin = block->getContent();
+	char* blockBegin = block->getContent();
 	size_t usingSize = block->getUsingSize();
 
 	while (recordBegin - blockBegin < usingSize) {
@@ -178,10 +177,10 @@ int RecordManager::recordBlockShow(string tableName, vector<string> *attributeNa
  * tableName为表名
  * conditionVector为存储条件的容器
  */
-int RecordManager::findAllRecords(string tableName, vector<Condition> *conditionVector) {
+int RecordManager::findAllRecords(string tableName, vector<Condition>* conditionVector) {
 	string filename = getTableFileName(tableName);
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
 	int count = 0;
 	while (true) {
 		if (blockNode == NULL) {
@@ -204,17 +203,17 @@ int RecordManager::findAllRecords(string tableName, vector<Condition> *condition
  * conditionVector为存储条件的容器
  * block为当前正在检索的块
  */
-int RecordManager::recordBlockFind(string tableName, vector<Condition> *conditionVector, BlockNode *block) {
+int RecordManager::recordBlockFind(string tableName, vector<Condition>* conditionVector, BlockNode* block) {
 	if (block == NULL) {
 		return -1;
 	}
 	int count = 0;
-	char *recordBegin = block->getContent();
+	char* recordBegin = block->getContent();
 	vector<Attribute> attributeVector;
 	int recordSize = api->recordSizeGet(tableName);
 
 	api->attributeGet(tableName, &attributeVector);
-	char *blockBegin = block->getContent();
+	char* blockBegin = block->getContent();
 	size_t usingSize = block->getUsingSize();
 
 	while (recordBegin - blockBegin < usingSize) {
@@ -231,10 +230,10 @@ int RecordManager::recordBlockFind(string tableName, vector<Condition> *conditio
  * tableName为表名
  * conditionVector为存储条件的容器
  */
-int RecordManager::deleteAllRecords(string tableName, vector<Condition> *conditionVector) {
+int RecordManager::deleteAllRecords(string tableName, vector<Condition>* conditionVector) {
 	string filename = getTableFileName(tableName);
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
 	int count = 0;
 	while (true) {
 		if (blockNode == NULL) {
@@ -257,10 +256,10 @@ int RecordManager::deleteAllRecords(string tableName, vector<Condition> *conditi
  * conditionVector为存储条件的容器
  * blockOffset为api从index中取得的块偏移量
  */
-int RecordManager::deleteAllRecordsByIndex(string tableName, vector<Condition> *conditionVector, int blockOffset) {
+int RecordManager::deleteAllRecordsByIndex(string tableName, vector<Condition>* conditionVector, int blockOffset) {
 	string filename = getTableFileName(tableName);
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockByOffset(fileNode, blockOffset); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockByOffset(fileNode, blockOffset); // 先拿到头节点
 	int count = 0;
 	if (blockNode == NULL) {
 		return -1;
@@ -277,20 +276,21 @@ int RecordManager::deleteAllRecordsByIndex(string tableName, vector<Condition> *
  * conditionVector为存储条件的容器
  * block为正在检索的块
  */
-int RecordManager::recordBlockDelete(string tableName, vector<Condition> *conditionVector, BlockNode *block) {
+int RecordManager::recordBlockDelete(string tableName, vector<Condition>* conditionVector, BlockNode* block) {
 	if (block == NULL) {
 		return -1;
 	}
 	int count = 0;
-	char *recordBegin = block->getContent();
+	char* recordBegin = block->getContent();
 	vector<Attribute> attributeVector;
 	int recordSize = api->recordSizeGet(tableName);
 
 	api->attributeGet(tableName, &attributeVector);
-	char *blockBegin = block->getContent();
+	char* blockBegin = block->getContent();
 	//size_t usingSize = block->getUsingSize();
 
-	while (recordBegin - blockBegin < block->getUsingSize()) { // 这个循环令人死亡
+	while (recordBegin - blockBegin < block->getUsingSize()) {
+		// 这个循环令人死亡
 		if (recordConditionFit(recordBegin, recordSize, &attributeVector, conditionVector)) {
 			count++;
 			//这里首先把符合条件的语句用后面的语句覆盖掉，然后把最后空出来的一个元祖清掉
@@ -317,8 +317,8 @@ int RecordManager::recordBlockDelete(string tableName, vector<Condition> *condit
  * attributeVector为属性容器，存储了表中各字段的属性
  * conditionVector为条件容器，存储了要求满足的各种条件
  */
-bool RecordManager::recordConditionFit(char *recordBegin, int recordSize, vector<Attribute> *attributeVector,
-	vector<Condition> *conditionVector) {
+bool RecordManager::recordConditionFit(char* recordBegin, int recordSize, vector<Attribute>* attributeVector,
+                                       vector<Condition>* conditionVector) {
 	if (conditionVector == NULL) {
 		return true;
 	}
@@ -326,7 +326,7 @@ bool RecordManager::recordConditionFit(char *recordBegin, int recordSize, vector
 	string attributeName;
 	int typeSize;
 	char content[MAX_SIZE];
-	char *contentBegin = recordBegin;
+	char* contentBegin = recordBegin;
 
 	for (int i = 0; i < attributeVector->size(); i++) {
 		type = (*attributeVector)[i].type;
@@ -354,7 +354,7 @@ bool RecordManager::recordConditionFit(char *recordBegin, int recordSize, vector
  * type为该字段的类型
  * condition为该字段需要满足的条件
  */
-bool RecordManager::contentConditionFit(char *content, int type, Condition *condition) {
+bool RecordManager::contentConditionFit(char* content, int type, Condition* condition) {
 	if (type == Attribute::TYPE_INT) {
 		int tmp = *((int *)content);
 		return condition->ifRight(tmp);
@@ -376,14 +376,14 @@ bool RecordManager::contentConditionFit(char *content, int type, Condition *cond
  * attributeVector为存储当前表所有字段的属性的容器
  * attributeNameVector为存储当前表所有属性的名字的容器
  */
-void RecordManager::recordPrint(char *recordBegin, int recordSize, vector<Attribute> *attributeVector,
-	vector<string> *attributeNameVector) {
+void RecordManager::recordPrint(char* recordBegin, int recordSize, vector<Attribute>* attributeVector,
+                                vector<string>* attributeNameVector) {
 	int type;
 	string attributeName;
 	int typeSize;
 	char content[MAX_SIZE];
 
-	char *contentBegin = recordBegin;
+	char* contentBegin = recordBegin;
 	for (int i = 0; i < attributeVector->size(); i++) {
 		type = (*attributeVector)[i].type;
 		typeSize = api->typeSizeGet(type);
@@ -405,7 +405,7 @@ void RecordManager::recordPrint(char *recordBegin, int recordSize, vector<Attrib
  * content为该记录当前字段的值
  * type为该记录当前字段的类别
  */
-void RecordManager::contentPrint(char *content, int type) {
+void RecordManager::contentPrint(char* content, int type) {
 	if (type == Attribute::TYPE_INT) {
 		int tmp = *((int *)content);
 		printf("%d ", tmp);
@@ -428,8 +428,8 @@ void RecordManager::contentPrint(char *content, int type) {
  */
 int RecordManager::indexRecordAlreadyInsert(string tableName, string indexName) {
 	string filename = getTableFileName(tableName);
-	FileNode *fileNode = bm.fetchFileNode(filename.c_str());// 获得fileNode
-	BlockNode *blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
+	FileNode* fileNode = bm.fetchFileNode(filename.c_str()); // 获得fileNode
+	BlockNode* blockNode = bm.fetchBlockHead(fileNode); // 先拿到头节点
 	int count = 0;
 	while (true) {
 		if (blockNode == nullptr) {
@@ -452,22 +452,22 @@ int RecordManager::indexRecordAlreadyInsert(string tableName, string indexName) 
  * indexName为索引名
  * block为当前正在检索的块
 */
-int RecordManager::indexRecordBlockAlreadyInsert(string tableName, string indexName, BlockNode *block) {
+int RecordManager::indexRecordBlockAlreadyInsert(string tableName, string indexName, BlockNode* block) {
 	if (block == NULL) {
 		return -1;
 	}
 	int count = 0;
-	char *recordBegin = block->getContent();
+	char* recordBegin = block->getContent();
 	vector<Attribute> attributeVector;
 	int recordSize = api->recordSizeGet(tableName);
 
 	api->attributeGet(tableName, &attributeVector);
-	char *blockBegin = block->getContent();
+	char* blockBegin = block->getContent();
 	size_t usingSize = block->getUsingSize();
 
 	int type;
 	int typeSize;
-	char *contentBegin;
+	char* contentBegin;
 
 	while (recordBegin - blockBegin < usingSize) {
 		contentBegin = recordBegin;

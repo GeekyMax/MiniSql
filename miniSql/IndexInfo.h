@@ -1,18 +1,22 @@
-#ifndef minisql_IndexInfo_h
-#define minisql_IndexInfo_h
+#ifndef MINISQL_INDEX_INFO_H
+#define MINISQL_INDEX_INFO_H
 
 #include <string>
 using namespace std;
 
-class IndexInfo
-{
+class IndexInfo {
 public:
-	IndexInfo(string i,string t,string a,int ty)
-    {indexName = i;tableName = t;Attribute = a;type = ty;}
-    string indexName;
-    string tableName;
-    string Attribute;
-    int type;
+	IndexInfo(string i, string t, string a, int ty) {
+		indexName = i;
+		tableName = t;
+		attribute = a;
+		type = ty;
+	}
+
+	string indexName;
+	string tableName;
+	string attribute;
+	int type;
 };
 
 #endif

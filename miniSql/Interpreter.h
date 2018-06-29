@@ -5,17 +5,20 @@
 #include <vector>
 #include "API.h"
 using namespace std;
+
 class Interpreter {
 public:
 
-	API * ap;
+	Api* ap;
 	string fileName;
-	int interpreter(string sql);
+	int interpreter(const string& sql);
 
-	string getWord(string sql, int *st);
+	static string getWord(string sql, int* tmp);
 
-	Interpreter() {}
-	~Interpreter() {}
+	Interpreter(): ap(new Api()) {
+	}
+
+	~Interpreter() = default;
 };
 
 #endif

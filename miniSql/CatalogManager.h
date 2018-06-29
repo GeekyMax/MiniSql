@@ -6,8 +6,8 @@
 //  Copyright © 2018年 apple. All rights reserved.
 //
 
-#ifndef CatalogManager_hpp
-#define CatalogManager_hpp
+#ifndef CATALOG_MANAGER_HPP
+#define CATALOG_MANAGER_HPP
 
 
 #include <stdio.h>
@@ -22,48 +22,50 @@ using namespace std;
 
 class CatalogManager {
 public:
-    BufferManager bm;
+	BufferManager bm;
 
-    CatalogManager() {};
+	CatalogManager() {
+	};
 
-    ~CatalogManager() {};
+	~CatalogManager() {
+	};
 
-    int addTable(string TableName, vector<Attribute> *AttributeVector, string PrimaryKey, int PKeyLocation);
+	int addTable(string tableName, vector<Attribute>* attributeVector, int pKeyLocation);
 
-    int dropTable(string TableName);
+	int dropTable(string tableName);
 
-    int addIndex(string IndexName, string TableName, string AttributeName, int Type);
+	int addIndex(const string& indexName, const string& tableName, const string& attribute, int type);
 
-    int setAttributeIndex(string TableName, string AttributeName, string IndexName);
+	int setAttributeIndex(const string& tableName, const string& attributeName, const string& indexName);
 
-    int dropIndex(string Index);
+	int dropIndex(const string& index);
 
-    int deleteAttributeIndex(string TableName, string AttributeName, string IndexName);
+	int deleteAttributeIndex(const string& tableName, const string& attributeName, const string& indexName);
 
-    int findTable(string TableName);
+	int findTable(const string& tableName);
 
-    int findIndex(string IndexName);
+	int findIndex(const string& indexName);
 
-    int insertRecord(string TableName, int RecordNum);
+	int insertRecord(const string& tableName, int recordNum);
 
-    int deleteRecord(string TableName, int DeleteNum);
+	int deleteRecord(const string& tableName, int deleteNum);
 
-    int getRecordNum(string TableName);
+	int getRecordNum(const string& tableName);
 
-    int getIndexNameList(string TableName, vector<string> *IndexNameVector);
+	int getIndexNameList(const string& tableName, vector<string>* indexNameVector);
 
-    int getAllIndex(vector<IndexInfo> *Indexs);
+	int getAllIndex(vector<IndexInfo>* indexs);
 
-    int getIndexType(string IndexName);
+	int getIndexType(const string& indexName);
 
-    void getRecordString(string TableName, vector<string> *RecordContent, char *RecordResult);
+	void getRecordString(const string& tableName, vector<string>* recordContent, char* recordResult);
 
-    int calculateLength(string TableName);
+	int calculateLength(const string& tableName);
 
-    int calculateLength2(int Type);
+	int calculateLength2(int type);
 
 
-    int getAttribute(string TableName, vector<Attribute> *attributeVector);
+	int getAttribute(const string& tableName, vector<Attribute>* attributeVector);
 
 };
 

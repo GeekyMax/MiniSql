@@ -9,23 +9,22 @@ using namespace std;
 
 #include "BPlusTree.h"
 
-class IndexManager
-{
-    map<string, tree *> treemap;
+class IndexManager {
+	map<string, tree *> treemap;
 
 public:
-    IndexManager();
-    ~IndexManager();
+	IndexManager();
+	~IndexManager();
 
-    int create(string, typeenum, int);
-    int drop(string);
-    int search(string, string);
-    int insert(string, string, int);
-    int deleta(string, string);
+	int create(string, typeenum, int);
+	int drop(string);
+	int search(string, string);
+	int insert(string, string, int);
+	int deleta(string, string);
 
-    int read(string);
-    int write(string);
-    int print(string);
+	int read(string);
+	int write(string);
+	int print(string);
 };
 
 #endif
